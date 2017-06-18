@@ -35,4 +35,4 @@ phpunit.phar
 tests/codeception/*/_support/_generated/*
 
 # phpmyadmin
-/phpmyadmin
+#/phpmyadmin
