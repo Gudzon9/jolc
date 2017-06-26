@@ -66,9 +66,10 @@ class DistrictController extends Controller
         $model = new District();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+            //return $this->redirect(['view', 'id' => $model->id]);
+            return $this->redirect(['index']);
         } else {
-            return $this->render('create', [
+            return $this->render('_form', [
                 'model' => $model,
             ]);
         }
@@ -85,9 +86,10 @@ class DistrictController extends Controller
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+            //return $this->redirect(['view', 'id' => $model->id]);
+            return $this->redirect(['index']);
         } else {
-            return $this->render('update', [
+            return $this->render('_form', [
                 'model' => $model,
             ]);
         }

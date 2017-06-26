@@ -8,7 +8,17 @@ use yii\helpers\ArrayHelper;
 /* @var $this yii\web\View */
 /* @var $model common\models\District */
 /* @var $form yii\widgets\ActiveForm */
+$this->title = ($model->isNewRecord ? 'Новий ' : 'Редагування').' Територія : ' . $model->name;
+$this->params['breadcrumbs'][] = ['label' => 'Териториї', 'url' => ['index']];
+//$this->params['breadcrumbs'][] = ['label' => $model->name, 'url' => ['view', 'id' => $model->id]];
+$this->params['breadcrumbs'][] = $model->isNewRecord ? 'Новий ' : 'Редагування';
+/*
+ * <h1><?= Html::encode($this->title) ?></h1>
+ */
 ?>
+<div class="district-update">
+
+    
 
 <div class="district-form">
 
@@ -24,4 +34,5 @@ use yii\helpers\ArrayHelper;
 
     <?php ActiveForm::end(); ?>
 
+</div>
 </div>

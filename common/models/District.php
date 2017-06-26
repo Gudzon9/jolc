@@ -26,7 +26,7 @@ class District extends \yii\db\ActiveRecord
                 'class' => TimestampBehavior::className(),
                 'attributes' => [
                     ActiveRecord::EVENT_BEFORE_INSERT => ['created_at', 'updated_at'],
-                    //ActiveRecord::EVENT_BEFORE_UPDATE => ['updated_at'],
+                    ActiveRecord::EVENT_BEFORE_UPDATE => ['updated_at'],
                 ],
                 // если вместо метки времени UNIX используется datetime:
                 // 'value' => new Expression('NOW()'),
@@ -35,6 +35,7 @@ class District extends \yii\db\ActiveRecord
                 'class' => BlameableBehavior::className(),
                 //'value' => function($event) {return Yii::$app->user->id;},
                 'attributes' => [
+                    ActiveRecord::EVENT_BEFORE_INSERT => ['created_by', 'updated_by'],
                     ActiveRecord::EVENT_BEFORE_UPDATE => ['updated_by'],
                 ],
             ]
@@ -54,8 +55,8 @@ class District extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['name', 'created_at','branch_id'], 'required'],
-            [['created_at', 'updated_at'], 'safe'],
+            [['name', 'branch_id'], 'required'],
+            [['created_at', 'updated_at', 'created_by','updated_by'], 'safe'],
             [['name'], 'string', 'max' => 50],
         ];
     }
