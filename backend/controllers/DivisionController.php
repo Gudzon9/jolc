@@ -8,6 +8,7 @@ use common\models\DivisionSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use common\commands\AddToTimelineCommand;
 
 /**
  * DivisionController implements the CRUD actions for Division model.
@@ -66,6 +67,16 @@ class DivisionController extends Controller
         $model = new Division();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        Yii::$app->commandBus->handle(new AddToTimelineCommand([
+            'category' => 'division',
+            'event' => 'insert',
+            'data' => [
+                'content' => 'new',
+                'user_id' => Yii::$app->user->id,
+                'created_at' => '1',
+            ]
+        ]));
+            
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
             return $this->render('create', [

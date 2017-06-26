@@ -5,7 +5,7 @@ namespace common\models;
 use Yii;
 use yii\db\ActiveRecord;
 use yii\behaviors\TimestampBehavior;
-use yii\behaviors\AttributeBehavior;
+use yii\behaviors\BlameableBehavior;
 /**
  * This is the model class for table "district".
  *
@@ -26,16 +26,16 @@ class District extends \yii\db\ActiveRecord
                 'class' => TimestampBehavior::className(),
                 'attributes' => [
                     ActiveRecord::EVENT_BEFORE_INSERT => ['created_at', 'updated_at'],
-                    ActiveRecord::EVENT_BEFORE_UPDATE => ['updated_at'],
+                    //ActiveRecord::EVENT_BEFORE_UPDATE => ['updated_at'],
                 ],
                 // если вместо метки времени UNIX используется datetime:
                 // 'value' => new Expression('NOW()'),
             ],
             'user_id' => [
-                'class' => AttributeBehavior::className(),
-                'value' => function($event) {return Yii::$app->user->id;},
+                'class' => BlameableBehavior::className(),
+                //'value' => function($event) {return Yii::$app->user->id;},
                 'attributes' => [
-                    ActiveRecord::EVENT_BEFORE_UPDATE => ['user_id'],
+                    ActiveRecord::EVENT_BEFORE_UPDATE => ['updated_by'],
                 ],
             ]
         ];
@@ -69,8 +69,10 @@ class District extends \yii\db\ActiveRecord
             'id' => 'ID',
             'name' => 'Назва',
             'branch_id' => 'Відділення',
-            'created_at' => 'Створено',
-            'updated_at' => 'Змінено',
+            'created_at' => 'Створено (коли)',
+            'updated_at' => 'Змінено (коли)',
+            'created_by' => 'Створено (ким)',
+            'updated_by' => 'Змінено (ким)',
         ];
     }
 

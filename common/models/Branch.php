@@ -3,7 +3,10 @@
 namespace common\models;
 
 use Yii;
-
+use yii\behaviors\TimestampBehavior;
+use yii\behaviors\AttributeBehavior;
+use yii\db\ActiveRecord;
+use yii\db\Expression;
 /**
  * This is the model class for table "branch".
  *
@@ -19,6 +22,27 @@ use Yii;
  */
 class Branch extends \yii\db\ActiveRecord
 {
+    public function behaviors()
+    {
+        return [
+            'timestamp'=> [
+                'class' => TimestampBehavior::className(),
+                'attributes' => [
+                    ActiveRecord::EVENT_BEFORE_INSERT => ['created_at', 'updated_at'],
+                    ActiveRecord::EVENT_BEFORE_UPDATE => ['updated_at'],
+                ],
+                // если вместо метки времени UNIX используется datetime:
+                'value' => new Expression('NOW()'),
+            ],
+            'user_id' => [
+                'class' => AttributeBehavior::className(),
+                'value' => function($event) {return Yii::$app->user->id;},
+                'attributes' => [
+                    ActiveRecord::EVENT_BEFORE_UPDATE => ['user_id'],
+                ],
+            ]
+        ];
+    }
     /**
      * @inheritdoc
      */
