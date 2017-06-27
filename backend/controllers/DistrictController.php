@@ -5,6 +5,8 @@ namespace backend\controllers;
 use Yii;
 use common\models\District;
 use common\models\DistrictSearch;
+use common\models\Slog;
+use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -51,8 +53,22 @@ class DistrictController extends Controller
      */
     public function actionView($id)
     {
+        $slogProvider = new ActiveDataProvider([
+            'query' => Slog::find()->where(['tbl_name'=>'district','id_intbl'=>$id]),
+            'pagination' => [
+                'pageSize' => 10,
+            ],
+            'sort' => [
+                'defaultOrder' => [
+                    'created_at' => SORT_DESC,
+                ]
+            ],
+        ]);
+        
+
         return $this->render('view', [
             'model' => $this->findModel($id),
+            'slogProvider' => $slogProvider,
         ]);
     }
 

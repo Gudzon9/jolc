@@ -44,11 +44,11 @@ class Slog extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'created_at' => 'Created At',
-            'tbl_name' => 'Tbl Name',
-            'id_intbl' => 'Id Intbl',
-            'data_befor' => 'Data Befor',
-            'data_after' => 'Data After',
+            'created_at' => 'Дата змін',
+            'tbl_name' => 'Таблиця',
+            'id_intbl' => '№ запису',
+            'data_befor' => 'Попередні значення',
+            'data_after' => 'Нові значення',
         ];
     }
 }

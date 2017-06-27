@@ -43,6 +43,7 @@ class District extends \yii\db\ActiveRecord
             ],
             'slog' => [
                 'class' => SlogBehavior::className(),
+                'excludedAttributes' => ['updated_at'],
             ]
         ];
     }

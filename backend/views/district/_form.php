@@ -30,6 +30,7 @@ $this->params['breadcrumbs'][] = $model->isNewRecord ? 'Новий ' : 'Реда
 
     <div class="form-group">
         <?= Html::submitButton($model->isNewRecord ? 'Створити' : 'Зберегти', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+        <?= Html::a('Відмова', ['index'], ['class' => 'btn btn-info']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>
