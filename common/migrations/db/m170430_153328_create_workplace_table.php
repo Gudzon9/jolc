@@ -17,8 +17,10 @@ class m170430_153328_create_workplace_table extends Migration
             'name' => $this->string(100)->notNull(),
             'branch_id' => $this->integer()->notNull(),
             'division_id' => $this->integer()->notNull(),
-            'created_at' => $this->datetime()->notNull(),
-            'updated_at' => $this->datetime(),
+            'created_at' => $this->integer()->notNull(),
+            'updated_at' => $this->integer()->notNull(),
+            'created_by' => $this->integer()->notNull(),
+            'updated_by' => $this->integer()->notNull(),
         ]);
     }
 

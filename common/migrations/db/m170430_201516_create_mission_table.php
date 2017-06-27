@@ -20,8 +20,10 @@ class m170430_201516_create_mission_table extends Migration
             'type_when_dir_1' => $this->integer()->notNull(),
             'type_when_dir_2' => $this->integer()->notNull(),
             'material_id' => $this->integer()->notNull(),
-            'created_at' => $this->datetime()->notNull(),
-            'updated_at' => $this->datetime(),
+            'created_at' => $this->integer()->notNull(),
+            'updated_at' => $this->integer()->notNull(),
+            'created_by' => $this->integer()->notNull(),
+            'updated_by' => $this->integer()->notNull(),
         ]);
     }
 

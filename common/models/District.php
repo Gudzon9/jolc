@@ -6,6 +6,8 @@ use Yii;
 use yii\db\ActiveRecord;
 use yii\behaviors\TimestampBehavior;
 use yii\behaviors\BlameableBehavior;
+use common\behaviors\SlogBehavior;
+
 /**
  * This is the model class for table "district".
  *
@@ -38,6 +40,9 @@ class District extends \yii\db\ActiveRecord
                     ActiveRecord::EVENT_BEFORE_INSERT => ['created_by', 'updated_by'],
                     ActiveRecord::EVENT_BEFORE_UPDATE => ['updated_by'],
                 ],
+            ],
+            'slog' => [
+                'class' => SlogBehavior::className(),
             ]
         ];
     }

@@ -17,24 +17,11 @@ class m170430_134932_create_branch_table extends Migration
             'name' => $this->string(100)->notNull(),
             'type' => $this->integer()->notNull()->defaultValue(2),
             'description' => $this->text(),
-            'created_at' => $this->datetime()->notNull(),
-            'updated_at' => $this->datetime(),
+            'created_at' => $this->integer()->notNull(),
+            'updated_at' => $this->integer()->notNull(),
+            'created_by' => $this->integer()->notNull(),
+            'updated_by' => $this->integer()->notNull(),
         ]);
-        $abranch = [
-            'Житомирський міськрайонний відділ',
-            'Андрушівський міжрайонний відділ',
-            'Бердичівський районний відділ',
-            'Коростенський міжрайонний відділ',
-            'Коростишівський міжрайонний відділ',
-            'Малинський міжрайонний відділ',
-            'Новоград-Волинський міжрайонний відділ',
-            'Овруцький міжрайонний відділ',
-            'Олевський міжрайонний відділ',
-            'Романівський міжрайонний відділ',
-        ];    
-        foreach ($abranch as $value) {
-            $this->insert('branch', ['name' => $value]);
-        }
     }
 
     /**

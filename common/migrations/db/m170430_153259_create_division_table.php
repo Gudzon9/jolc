@@ -18,8 +18,10 @@ class m170430_153259_create_division_table extends Migration
             'branch_id' => $this->integer()->notNull(),
             'type_div' => $this->integer()->notNull(),
             'type_lab' => $this->integer()->notNull(),
-            'created_at' => $this->datetime()->notNull(),
-            'updated_at' => $this->datetime(),
+            'created_at' => $this->integer()->notNull(),
+            'updated_at' => $this->integer()->notNull(),
+            'created_by' => $this->integer()->notNull(),
+            'updated_by' => $this->integer()->notNull(),
         ]);
     }
 

@@ -18,8 +18,10 @@ class m170430_153631_create_scenario_table extends Migration
             'workplace_id' => $this->integer()->notNull(),
             'type' => $this->integer()->notNull(),
             'status' => $this->integer()->notNull(),
-            'created_at' => $this->datetime()->notNull(),
-            'updated_at' => $this->datetime(),
+            'created_at' => $this->integer()->notNull(),
+            'updated_at' => $this->integer()->notNull(),
+            'created_by' => $this->integer()->notNull(),
+            'updated_by' => $this->integer()->notNull(),
         ]);
     }
 
