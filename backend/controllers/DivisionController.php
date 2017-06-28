@@ -5,10 +5,12 @@ namespace backend\controllers;
 use Yii;
 use common\models\Division;
 use common\models\DivisionSearch;
+use common\models\Slog;
 use yii\web\Controller;
+use yii\data\ActiveDataProvider;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
-use common\commands\AddToTimelineCommand;
+//use common\commands\AddToTimelineCommand;
 
 /**
  * DivisionController implements the CRUD actions for Division model.
@@ -52,8 +54,22 @@ class DivisionController extends Controller
      */
     public function actionView($id)
     {
+        $slogProvider = new ActiveDataProvider([
+            'query' => Slog::find()->where(['tbl_name'=>'division','id_intbl'=>$id]),
+            'pagination' => [
+                'pageSize' => 10,
+            ],
+            'sort' => [
+                'defaultOrder' => [
+                    'created_at' => SORT_DESC,
+                ]
+            ],
+        ]);
+        
+
         return $this->render('view', [
             'model' => $this->findModel($id),
+            'slogProvider' => $slogProvider,
         ]);
     }
 
@@ -67,19 +83,9 @@ class DivisionController extends Controller
         $model = new Division();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-        Yii::$app->commandBus->handle(new AddToTimelineCommand([
-            'category' => 'division',
-            'event' => 'insert',
-            'data' => [
-                'content' => 'new',
-                'user_id' => Yii::$app->user->id,
-                'created_at' => '1',
-            ]
-        ]));
-            
-            return $this->redirect(['view', 'id' => $model->id]);
+            return $this->redirect(['index']);
         } else {
-            return $this->render('create', [
+            return $this->render('_form', [
                 'model' => $model,
             ]);
         }
@@ -96,9 +102,9 @@ class DivisionController extends Controller
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+            return $this->redirect(['index']);
         } else {
-            return $this->render('update', [
+            return $this->render('_form', [
                 'model' => $model,
             ]);
         }

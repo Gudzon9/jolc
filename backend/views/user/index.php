@@ -29,9 +29,9 @@ $this->params['breadcrumbs'][] = $this->title;
             'class' => 'grid-view table-responsive'
         ],
         'columns' => [
-            'id',
             'username',
-            'email:email',
+            'branch_id',
+            'branch_access',
             [
                 'class' => EnumColumn::className(),
                 'attribute' => 'status',

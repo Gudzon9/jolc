@@ -43,6 +43,8 @@ class User extends ActiveRecord implements IdentityInterface
     const EVENT_AFTER_SIGNUP = 'afterSignup';
     const EVENT_AFTER_LOGIN = 'afterLogin';
 
+    const BRANCH_OWN = 1;
+    const BRANCH_ALL = 2;
     /**
      * @inheritdoc
      */
@@ -107,9 +109,10 @@ class User extends ActiveRecord implements IdentityInterface
     public function rules()
     {
         return [
-            [['username', 'email'], 'unique'],
+            [['username'], 'unique'],
             ['status', 'default', 'value' => self::STATUS_NOT_ACTIVE],
             ['status', 'in', 'range' => array_keys(self::statuses())],
+            [['branch_id','branch_access'], 'integer'],
             [['username'], 'filter', 'filter' => '\yii\helpers\Html::encode']
         ];
     }
@@ -123,6 +126,8 @@ class User extends ActiveRecord implements IdentityInterface
             'username' => Yii::t('common', 'Username'),
             'email' => Yii::t('common', 'E-mail'),
             'status' => Yii::t('common', 'Status'),
+            'branch_id' => 'Відділення',
+            'branch_access' => 'Обмеження',
             'access_token' => Yii::t('common', 'API access token'),
             'created_at' => Yii::t('common', 'Created at'),
             'updated_at' => Yii::t('common', 'Updated at'),
@@ -253,6 +258,7 @@ class User extends ActiveRecord implements IdentityInterface
     public function afterSignup(array $profileData = [])
     {
         $this->refresh();
+        /*
         Yii::$app->commandBus->handle(new AddToTimelineCommand([
             'category' => 'user',
             'event' => 'signup',
@@ -262,6 +268,8 @@ class User extends ActiveRecord implements IdentityInterface
                 'created_at' => $this->created_at
             ]
         ]));
+         * 
+         */
         $profile = new UserProfile();
         $profile->locale = Yii::$app->language;
         $profile->load($profileData, '');

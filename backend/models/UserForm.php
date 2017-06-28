@@ -14,6 +14,8 @@ class UserForm extends Model
 {
     public $username;
     public $email;
+    public $branch_id;
+    public $branch_access;
     public $password;
     public $status;
     public $roles;
@@ -34,7 +36,7 @@ class UserForm extends Model
                 }
             }],
             ['username', 'string', 'min' => 2, 'max' => 255],
-
+            /*        
             ['email', 'filter', 'filter' => 'trim'],
             ['email', 'required'],
             ['email', 'email'],
@@ -43,7 +45,8 @@ class UserForm extends Model
                     $query->andWhere(['not', ['id'=>$this->getModel()->id]]);
                 }
             }],
-
+            */
+            [['branch_id','branch_access'], 'integer'],        
             ['password', 'required', 'on' => 'create'],
             ['password', 'string', 'min' => 6],
 
@@ -65,6 +68,8 @@ class UserForm extends Model
         return [
             'username' => Yii::t('common', 'Username'),
             'email' => Yii::t('common', 'Email'),
+            'branch_id' => 'Відділення',
+            'branch_access' => 'Обмеження',
             'status' => Yii::t('common', 'Status'),
             'password' => Yii::t('common', 'Password'),
             'roles' => Yii::t('common', 'Roles')
@@ -78,7 +83,9 @@ class UserForm extends Model
     public function setModel($model)
     {
         $this->username = $model->username;
-        $this->email = $model->email;
+        //$this->email = $model->email;
+        $this->branch_id = $model->branch_id;
+        $this->branch_access = $model->branch_access;
         $this->status = $model->status;
         $this->model = $model;
         $this->roles = ArrayHelper::getColumn(
@@ -110,7 +117,9 @@ class UserForm extends Model
             $model = $this->getModel();
             $isNewRecord = $model->getIsNewRecord();
             $model->username = $this->username;
-            $model->email = $this->email;
+            //$model->email = $this->email;
+            $model->branch_id = $this->branch_id ;
+            $model->branch_access = $this->branch_access ;
             $model->status = $this->status;
             if ($this->password) {
                 $model->setPassword($this->password);

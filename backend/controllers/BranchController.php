@@ -5,6 +5,9 @@ namespace backend\controllers;
 use Yii;
 use common\models\Branch;
 use common\models\BranchSearch;
+use common\models\Slog;
+use common\models\District;
+use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -51,8 +54,22 @@ class BranchController extends Controller
      */
     public function actionView($id)
     {
+        $slogProvider = new ActiveDataProvider([
+            'query' => Slog::find()->where(['tbl_name'=>'branch','id_intbl'=>$id]),
+            'pagination' => [
+                'pageSize' => 10,
+            ],
+            'sort' => [
+                'defaultOrder' => [
+                    'created_at' => SORT_DESC,
+                ]
+            ],
+        ]);
+        
+
         return $this->render('view', [
             'model' => $this->findModel($id),
+            'slogProvider' => $slogProvider,
         ]);
     }
 
@@ -66,9 +83,9 @@ class BranchController extends Controller
         $model = new Branch();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+            return $this->redirect(['index']);
         } else {
-            return $this->render('create', [
+            return $this->render('_form', [
                 'model' => $model,
             ]);
         }
@@ -85,9 +102,9 @@ class BranchController extends Controller
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+            return $this->redirect(['index']);
         } else {
-            return $this->render('update', [
+            return $this->render('_form', [
                 'model' => $model,
             ]);
         }
@@ -101,7 +118,9 @@ class BranchController extends Controller
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
+        if(District::find()->Where(['branch_id'=>$id])->count() != 0) {
+            $this->findModel($id)->delete();
+        }
 
         return $this->redirect(['index']);
     }

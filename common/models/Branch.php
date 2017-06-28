@@ -4,7 +4,8 @@ namespace common\models;
 
 use Yii;
 use yii\behaviors\TimestampBehavior;
-use yii\behaviors\AttributeBehavior;
+use yii\behaviors\BlameableBehavior;
+use common\behaviors\SlogBehavior;
 use yii\db\ActiveRecord;
 use yii\db\Expression;
 /**
@@ -22,6 +23,9 @@ use yii\db\Expression;
  */
 class Branch extends \yii\db\ActiveRecord
 {
+    const BRANCH_MASTER = 1;
+    const BRANCH_SLAVE = 2;
+    
     public function behaviors()
     {
         return [
@@ -32,14 +36,19 @@ class Branch extends \yii\db\ActiveRecord
                     ActiveRecord::EVENT_BEFORE_UPDATE => ['updated_at'],
                 ],
                 // если вместо метки времени UNIX используется datetime:
-                'value' => new Expression('NOW()'),
+                // 'value' => new Expression('NOW()'),
             ],
             'user_id' => [
-                'class' => AttributeBehavior::className(),
-                'value' => function($event) {return Yii::$app->user->id;},
+                'class' => BlameableBehavior::className(),
+                //'value' => function($event) {return Yii::$app->user->id;},
                 'attributes' => [
-                    ActiveRecord::EVENT_BEFORE_UPDATE => ['user_id'],
+                    ActiveRecord::EVENT_BEFORE_INSERT => ['created_by', 'updated_by'],
+                    ActiveRecord::EVENT_BEFORE_UPDATE => ['updated_by'],
                 ],
+            ],
+            'slog' => [
+                'class' => SlogBehavior::className(),
+                'excludedAttributes' => ['updated_at'],
             ]
         ];
     }
@@ -57,11 +66,11 @@ class Branch extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['name', 'created_at'], 'required'],
+            [['name','type'], 'required'],
+            [['name'], 'string', 'max' => 100],
             [['type'], 'integer'],
             [['description'], 'string'],
-            [['created_at', 'updated_at'], 'safe'],
-            [['name'], 'string', 'max' => 100],
+            [['created_at', 'updated_at', 'created_by','updated_by'], 'safe'],
         ];
     }
 
@@ -72,19 +81,14 @@ class Branch extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'name' => 'Name',
-            'type' => 'Type',
-            'description' => 'Description',
-            'created_at' => 'Created At',
-            'updated_at' => 'Updated At',
+            'name' => 'Назва',
+            'type' => 'Тип',
+            'description' => 'Прімітка',
+            'created_at' => 'Створено (коли)',
+            'updated_at' => 'Змінено (коли)',
+            'created_by' => 'Створено (ким)',
+            'updated_by' => 'Змінено (ким)',
         ];
     }
 
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getDistricts()
-    {
-        return $this->hasMany(District::className(), ['id' => 'district_id']);
-    }
 }

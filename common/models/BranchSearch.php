@@ -12,6 +12,8 @@ use common\models\Branch;
  */
 class BranchSearch extends Branch
 {
+    public $created_range;
+    public $updated_range;
     /**
      * @inheritdoc
      */
@@ -19,7 +21,7 @@ class BranchSearch extends Branch
     {
         return [
             [['id', 'type'], 'integer'],
-            [['name', 'description', 'created_at', 'updated_at'], 'safe'],
+            [['name', 'description', 'created_at', 'updated_at', 'created_by', 'updated_by'], 'safe'],
         ];
     }
 
@@ -61,12 +63,23 @@ class BranchSearch extends Branch
         $query->andFilterWhere([
             'id' => $this->id,
             'type' => $this->type,
-            'created_at' => $this->created_at,
-            'updated_at' => $this->updated_at,
+            'created_by' => $this->created_by,
+            'updated_by' => $this->updated_by,
         ]);
 
         $query->andFilterWhere(['like', 'name', $this->name])
             ->andFilterWhere(['like', 'description', $this->description]);
+        
+        if (!is_null($this->created_range) && 
+            strpos($this->created_range, ' - ') !== false ) {
+            list($start_date, $end_date) = explode(' - ', $this->created_range);
+            $query->andFilterWhere(['between', 'FROM_UNIXTIME(updated_at, "%Y-%m-%d")', $start_date, $end_date]);
+        }        
+        if (!is_null($this->updated_range) && 
+            strpos($this->updated_range, ' - ') !== false ) {
+            list($start_date, $end_date) = explode(' - ', $this->updated_range);
+            $query->andFilterWhere(['between', 'FROM_UNIXTIME(updated_at, "%Y-%m-%d")', $start_date, $end_date]);
+        }        
 
         return $dataProvider;
     }

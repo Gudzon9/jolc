@@ -14,9 +14,7 @@ $this->params['breadcrumbs'][] = $this->title;
  * <h1><?= Html::encode($this->title) ?></h1>
  */
 ?>
-<div class="district-view">
-
-    <h3><?= Html::encode($this->title) ?></h3>
+<div>
 
     <p>
         <?= Html::a('До списку', ['index'], ['class' => 'btn btn-info']) ?>
@@ -29,7 +27,7 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
         ]) ?>
     </p>
-
+    <h3>Поточний стан</h3>
     <?= DetailView::widget([
         'model' => $model,
         'attributes' => [

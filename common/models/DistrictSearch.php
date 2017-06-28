@@ -22,7 +22,7 @@ class DistrictSearch extends District
     {
         return [
             [['id', 'branch_id'], 'integer'],
-            [['name', 'created_at', 'updated_at', 'created_by', 'updated_by','dealerAvailableDate'], 'safe'],
+            [['name', 'created_at', 'updated_at', 'created_by', 'updated_by'], 'safe'],
             
         ];
     }

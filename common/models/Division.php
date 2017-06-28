@@ -3,8 +3,9 @@ namespace common\models;
 
 use common\commands\AddToTimelineCommand;
 use yii\behaviors\TimestampBehavior;
+use yii\behaviors\BlameableBehavior;
+use common\behaviors\SlogBehavior;
 use yii\db\ActiveRecord;
-
 use Yii;
 
 /**
@@ -20,19 +21,41 @@ use Yii;
  */
 class Division extends \yii\db\ActiveRecord
 {
-    const EVENT_AFTER_CHANGE = 'afterChange';
+    const DIVISION_TYPE_ADM = 1;
+    const DIVISION_TYPE_ORG = 2;
+    const DIVISION_TYPE_LAB = 3;
     /**
      * @inheritdoc
      */
-    public static function tableName()
-    {
-        return 'division';
-    }
     public function behaviors()
     {
         return [
-            TimestampBehavior::className(),
+            'timestamp'=> [
+                'class' => TimestampBehavior::className(),
+                'attributes' => [
+                    ActiveRecord::EVENT_BEFORE_INSERT => ['created_at', 'updated_at'],
+                    ActiveRecord::EVENT_BEFORE_UPDATE => ['updated_at'],
+                ],
+                // если вместо метки времени UNIX используется datetime:
+                // 'value' => new Expression('NOW()'),
+            ],
+            'user_id' => [
+                'class' => BlameableBehavior::className(),
+                //'value' => function($event) {return Yii::$app->user->id;},
+                'attributes' => [
+                    ActiveRecord::EVENT_BEFORE_INSERT => ['created_by', 'updated_by'],
+                    ActiveRecord::EVENT_BEFORE_UPDATE => ['updated_by'],
+                ],
+            ],
+            'slog' => [
+                'class' => SlogBehavior::className(),
+                'excludedAttributes' => ['updated_at'],
+            ]
         ];
+    }
+    public static function tableName()
+    {
+        return 'division';
     }
 
     /**
@@ -41,9 +64,9 @@ class Division extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['name', 'branch_id', 'type_div', 'type_lab', 'created_at'], 'required'],
+            [['name', 'branch_id', 'type_div', 'type_lab'], 'required'],
             [['branch_id', 'type_div', 'type_lab'], 'integer'],
-            [['created_at', 'updated_at'], 'safe'],
+            [['created_at', 'updated_at', 'created_by','updated_by'], 'safe'],
             [['name'], 'string', 'max' => 100],
         ];
     }
@@ -55,15 +78,23 @@ class Division extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'name' => 'Name',
-            'branch_id' => 'Branch ID',
-            'type_div' => 'Type Div',
-            'type_lab' => 'Type Lab',
-            'created_at' => 'Created At',
-            'updated_at' => 'Updated At',
+            'name' => 'Назва',
+            'branch_id' => 'Відділення',
+            'type_div' => 'Тип підрозділу',
+            'type_lab' => 'Тип лабораторії',
+            'created_at' => 'Створено (коли)',
+            'updated_at' => 'Змінено (коли)',
+            'created_by' => 'Створено (ким)',
+            'updated_by' => 'Змінено (ким)',
         ];
     }
 
+    public function getBranch()
+    {
+        return $this->hasOne(Branch::className(),['id'=>'branch_id']);
+    }
+
+/*    
         public function afterSave($insert, $changedAttributes)
     {
         parent::afterSave($insert, $changedAttributes);
@@ -90,5 +121,5 @@ class Division extends \yii\db\ActiveRecord
             ]
         ]));
     }
-    
+ */    
 }

@@ -2,29 +2,29 @@
 
 use yii\helpers\Html;
 use yii\widgets\DetailView;
+use yii\grid\GridView;
 
 /* @var $this yii\web\View */
 /* @var $model common\models\Branch */
 
 $this->title = $model->name;
-$this->params['breadcrumbs'][] = ['label' => 'Branches', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => 'Відділення', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="branch-view">
 
-    <h1><?= Html::encode($this->title) ?></h1>
-
     <p>
-        <?= Html::a('Update', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
-        <?= Html::a('Delete', ['delete', 'id' => $model->id], [
+        <?= Html::a('До списку', ['index'], ['class' => 'btn btn-info']) ?>
+        <?= Html::a('Редагування', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
+        <?= Html::a('Видалення', ['delete', 'id' => $model->id], [
             'class' => 'btn btn-danger',
             'data' => [
-                'confirm' => 'Are you sure you want to delete this item?',
+                'confirm' => 'Видалити запис?',
                 'method' => 'post',
             ],
         ]) ?>
     </p>
-
+    <h3>Поточний стан</h3>
     <?= DetailView::widget([
         'model' => $model,
         'attributes' => [
@@ -33,8 +33,42 @@ $this->params['breadcrumbs'][] = $this->title;
             'type',
             'description:ntext',
             'created_at',
+            'created_by',
             'updated_at',
+            'updated_by',
         ],
     ]) ?>
+    <h3>Історія змін</h3>
+    <?= GridView::widget([
+        'dataProvider' => $slogProvider,
+        'columns' => [
+            [
+                'attribute' => 'created_at',
+                'format'=>'datetime',
+            ],    
+            [
+                'attribute' => 'tbl_name',
+            ],    
+            [
+                'attribute' => 'id_intbl',
+            ],    
+            [
+                'attribute' => 'data_befor',
+                'format'=>'html',
+                'value'=> function($model){
+                    $data = json_decode($model->data_befor);
+                    return DetailView::widget(['model' => $data,]);
+                },
+            ],    
+            [
+                'attribute' => 'data_after',
+                'format'=>'html',
+                'value'=> function($model){
+                    $data = json_decode($model->data_after);
+                    return DetailView::widget(['model' => $data,]);
+                },
+            ],    
+        ],
+    ]);?> 
 
 </div>

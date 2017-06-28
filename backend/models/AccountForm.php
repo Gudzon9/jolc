@@ -11,6 +11,8 @@ class AccountForm extends Model
 {
     public $username;
     public $email;
+    public $branch_id;
+    public $branch_access;
     public $password;
     public $password_confirm;
 
@@ -30,6 +32,7 @@ class AccountForm extends Model
                 }
             ],
             ['username', 'string', 'min' => 1, 'max' => 255],
+            /*
             ['email', 'filter', 'filter' => 'trim'],
             ['email', 'required'],
             ['email', 'email'],
@@ -40,6 +43,9 @@ class AccountForm extends Model
                     $query->andWhere(['not', ['id' => Yii::$app->user->getId()]]);
                 }
             ],
+             * 
+             */
+            [['branch_id', 'branch_access'],'integer'],
             ['password', 'string'],
             [['password_confirm'], 'compare', 'compareAttribute' => 'password']
         ];
@@ -53,6 +59,8 @@ class AccountForm extends Model
         return [
             'username' => Yii::t('backend', 'Username'),
             'email' => Yii::t('backend', 'Email'),
+            'branch_id' => 'Відділення',
+            'branch_access' => 'Обмеження',
             'password' => Yii::t('backend', 'Password'),
             'password_confirm' => Yii::t('backend', 'Password Confirm')
         ];
