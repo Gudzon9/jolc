@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "8a1697d21d34474b787a68c8d8eb4d25",
+    "content-hash": "5daabedec5c2ce1545e23dfafaefe72b",
     "packages": [
         {
             "name": "asofter/yii2-imperavi-redactor",
@@ -56,6 +56,59 @@
                 "yii"
             ],
             "time": "2017-05-22T12:14:37+00:00"
+        },
+        {
+            "name": "beaten-sect0r/yii2-db-manager",
+            "version": "1.0.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Beaten-Sect0r/yii2-db-manager.git",
+                "reference": "8dc9e55decbbe6b4ecad9752aeacf71268dec90d"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Beaten-Sect0r/yii2-db-manager/zipball/8dc9e55decbbe6b4ecad9752aeacf71268dec90d",
+                "reference": "8dc9e55decbbe6b4ecad9752aeacf71268dec90d",
+                "shasum": ""
+            },
+            "require": {
+                "symfony/process": "2.8.*|3.0.*",
+                "yiisoft/yii2": "~2.0.6",
+                "yiisoft/yii2-bootstrap": "*"
+            },
+            "type": "yii2-extension",
+            "extra": {
+                "bootstrap": "bs\\dbManager\\Bootstrap"
+            },
+            "autoload": {
+                "psr-4": {
+                    "bs\\dbManager\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Alexander Volkov",
+                    "email": "beatensect0r@gmail.com",
+                    "role": "Developer"
+                },
+                {
+                    "name": "Insolita",
+                    "email": "donnainsolita@gmail.com",
+                    "role": "Developer"
+                }
+            ],
+            "description": "The db dump manager module for Yii2",
+            "keywords": [
+                "backup",
+                "db manager",
+                "dump",
+                "yii2"
+            ],
+            "time": "2017-02-25T17:39:40+00:00"
         },
         {
             "name": "bower-asset/ace-builds",
@@ -1710,16 +1763,16 @@
         },
         {
             "name": "symfony/process",
-            "version": "v3.3.2",
+            "version": "v3.0.9",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/process.git",
-                "reference": "8e30690c67aafb6c7992d6d8eb0d707807dd3eaf"
+                "reference": "768debc5996f599c4372b322d9061dba2a4bf505"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/process/zipball/8e30690c67aafb6c7992d6d8eb0d707807dd3eaf",
-                "reference": "8e30690c67aafb6c7992d6d8eb0d707807dd3eaf",
+                "url": "https://api.github.com/repos/symfony/process/zipball/768debc5996f599c4372b322d9061dba2a4bf505",
+                "reference": "768debc5996f599c4372b322d9061dba2a4bf505",
                 "shasum": ""
             },
             "require": {
@@ -1728,7 +1781,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "3.3-dev"
+                    "dev-master": "3.0-dev"
                 }
             },
             "autoload": {
@@ -1755,7 +1808,7 @@
             ],
             "description": "Symfony Process Component",
             "homepage": "https://symfony.com",
-            "time": "2017-05-22T12:32:03+00:00"
+            "time": "2016-07-28T11:13:34+00:00"
         },
         {
             "name": "trntv/cheatsheet",
@@ -2834,28 +2887,26 @@
         },
         {
             "name": "facebook/webdriver",
-            "version": "1.3.0",
+            "version": "1.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/facebook/php-webdriver.git",
-                "reference": "77300c4ab2025d4316635f592ec849ca7323bd8c"
+                "reference": "af21de3ae5306a8ca0bcc02a19735dadc43e83f3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/facebook/php-webdriver/zipball/77300c4ab2025d4316635f592ec849ca7323bd8c",
-                "reference": "77300c4ab2025d4316635f592ec849ca7323bd8c",
+                "url": "https://api.github.com/repos/facebook/php-webdriver/zipball/af21de3ae5306a8ca0bcc02a19735dadc43e83f3",
+                "reference": "af21de3ae5306a8ca0bcc02a19735dadc43e83f3",
                 "shasum": ""
             },
             "require": {
                 "ext-curl": "*",
-                "php": "^5.5 || ~7.0",
-                "symfony/process": "^2.8 || ^3.1"
+                "php": "^5.5 || ~7.0"
             },
             "require-dev": {
                 "friendsofphp/php-cs-fixer": "^1.11",
                 "php-mock/php-mock-phpunit": "^1.1",
                 "phpunit/phpunit": "4.6.* || ~5.0",
-                "satooshi/php-coveralls": "^1.0",
                 "squizlabs/php_codesniffer": "^2.6"
             },
             "suggest": {
@@ -2879,7 +2930,7 @@
                 "selenium",
                 "webdriver"
             ],
-            "time": "2017-01-13T15:48:08+00:00"
+            "time": "2016-10-14T15:16:51+00:00"
         },
         {
             "name": "fzaninotto/faker",
@@ -3772,16 +3823,16 @@
         },
         {
             "name": "phpunit/phpunit-mock-objects",
-            "version": "4.0.1",
+            "version": "4.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit-mock-objects.git",
-                "reference": "eabce450df194817a7d7e27e19013569a903a2bf"
+                "reference": "d8833b396dce9162bb2eb5d59aee5a3ab3cfa5b4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit-mock-objects/zipball/eabce450df194817a7d7e27e19013569a903a2bf",
-                "reference": "eabce450df194817a7d7e27e19013569a903a2bf",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit-mock-objects/zipball/d8833b396dce9162bb2eb5d59aee5a3ab3cfa5b4",
+                "reference": "d8833b396dce9162bb2eb5d59aee5a3ab3cfa5b4",
                 "shasum": ""
             },
             "require": {
@@ -3827,7 +3878,7 @@
                 "mock",
                 "xunit"
             ],
-            "time": "2017-03-03T06:30:20+00:00"
+            "time": "2017-06-30T08:15:21+00:00"
         },
         {
             "name": "psr/log",

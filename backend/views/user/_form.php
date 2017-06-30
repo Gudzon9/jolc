@@ -23,11 +23,8 @@ use yii\helpers\ArrayHelper;
         <?php echo $form->field($model, 'username') ?>
         <?php echo $form->field($model, 'password')->passwordInput() ?>
         <?php echo $form->field($model, 'branch_id')->dropDownList(ArrayHelper::map(Branch::find()->asArray()->all(),'id','name')) ?>
-        <?php echo $form->field($model, 'branch_access')->dropDownList([
-            User::BRANCH_OWN => 'Тільки своє відділення',
-            User::BRANCH_ALL => 'Всі відділення'
-            ],['disabled'=>false]) 
-        ?>
+        <?php echo $form->field($model, 'division_id')->dropDownList(ArrayHelper::map(Division::find()->where(['branch_id'=>$model->branch_id])->asArray()->all(),'id','name')) ?>
+        <?php echo $form->field($model, 'level_access')->dropDownList(User::levelaccess(),['disabled'=>false]) ?>
         <?php echo $form->field($model, 'status')->dropDownList(User::statuses()) ?>
         <?php echo $form->field($model, 'roles')->checkboxList($roles) ?>
         <div class="form-group">

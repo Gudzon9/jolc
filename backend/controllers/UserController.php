@@ -86,10 +86,10 @@ class UserController extends Controller
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['index']);
         }
-
+        $roles = array_replace(ArrayHelper::map(Yii::$app->authManager->getRoles(), 'name', 'name') , User::roles() );
         return $this->render('update', [
             'model' => $model,
-            'roles' => ArrayHelper::map(Yii::$app->authManager->getRoles(), 'name', 'name')
+            'roles' => $roles
         ]);
     }
 

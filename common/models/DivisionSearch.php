@@ -53,7 +53,7 @@ class DivisionSearch extends Division
             'query' => $query,
         ]);
 
-        if(Yii::$app->user->identity->branch_access == User::BRANCH_OWN) {
+        if(Yii::$app->user->identity->level_access == User::LEVEL_ACCESS_BRANCH) {
             $query->andFilterWhere(['branch_id' => Yii::$app->user->identity->branch_id, ]);
         }
         

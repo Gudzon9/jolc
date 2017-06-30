@@ -12,7 +12,8 @@ class AccountForm extends Model
     public $username;
     public $email;
     public $branch_id;
-    public $branch_access;
+    public $division_id;
+    public $level_access;
     public $password;
     public $password_confirm;
 
@@ -45,7 +46,7 @@ class AccountForm extends Model
             ],
              * 
              */
-            [['branch_id', 'branch_access'],'integer'],
+            [['branch_id', 'division_id', 'level_access'],'integer'],
             ['password', 'string'],
             [['password_confirm'], 'compare', 'compareAttribute' => 'password']
         ];
@@ -60,7 +61,8 @@ class AccountForm extends Model
             'username' => Yii::t('backend', 'Username'),
             'email' => Yii::t('backend', 'Email'),
             'branch_id' => 'Відділення',
-            'branch_access' => 'Обмеження',
+            'division_id' => 'Підрозділ',
+            'level_access' => 'Обмеження',
             'password' => Yii::t('backend', 'Password'),
             'password_confirm' => Yii::t('backend', 'Password Confirm')
         ];

@@ -97,6 +97,10 @@ class SignInController extends Controller
         $model = new AccountForm();
         $model->username = $user->username;
         $model->email = $user->email;
+        $model->branch_id = $user->branch_id;
+        $model->division_id = $user->division_id;
+        $model->level_access = $user->level_access;
+        
         if ($model->load($_POST) && $model->validate()) {
             $user->username = $model->username;
             $user->email = $model->email;

@@ -35,6 +35,22 @@ $config = [
         ],
     ],
     'modules' => [
+        'db-manager' => [
+            'class' => 'bs\dbManager\Module',
+            // path to directory for the dumps
+            'path' => '@app/backups',
+            // list of registerd db-components
+            'dbList' => ['db'],
+            'as access' => [
+                'class' => 'yii\filters\AccessControl',
+                'rules' => [
+                    [
+                        'allow' => true,
+                        'roles' => ['superadm'],
+                    ],
+                ],
+            ],
+        ],    
         'i18n' => [
             'class' => backend\modules\i18n\Module::class,
             'defaultRoute' => 'i18n-message/index',
@@ -67,17 +83,17 @@ $config = [
                 'roles' => ['?'],
             ],
             [
-                'controllers' => ['user'],
+                'controllers' => ['user','district','branch'],
                 'allow' => true,
-                'roles' => ['administrator'],
+                'roles' => ['superadm'],
             ],
             [
-                'controllers' => ['user'],
+                'controllers' => ['user','district','branch'],
                 'allow' => false,
             ],
             [
                 'allow' => true,
-                'roles' => ['manager'],
+                'roles' => ['viewer'],
             ]
         ]
     ]

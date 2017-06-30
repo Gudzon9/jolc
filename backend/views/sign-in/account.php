@@ -3,6 +3,7 @@
 use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
 use common\models\Branch;
+use common\models\Division;
 use common\models\User;
 use yii\helpers\ArrayHelper;
 
@@ -23,10 +24,8 @@ $this->title = Yii::t('backend', 'Edit account')
     <?php echo $form->field($model, 'username')->textInput(['readonly'=>'readonly']) ?>
 
     <?php echo $form->field($model, 'branch_id')->dropDownList(ArrayHelper::map(Branch::find()->all(),'id','name'),['disabled'=>true]) ?>
-    <?php echo $form->field($model, 'branch_access')->dropDownList([
-        User::BRANCH_OWN => 'Тільки своє відділення',
-        User::BRANCH_ALL => 'Всі відділення'
-    ],['disabled'=>true]) ?>
+    <?php echo $form->field($model, 'division_id')->dropDownList(ArrayHelper::map(Division::find()->all(),'id','name'),['disabled'=>true]) ?>
+    <?php echo $form->field($model, 'level_access')->dropDownList(User::levelaccess(),['disabled'=>true]) ?>
     
     <?php echo $form->field($model, 'password')->passwordInput() ?>
 

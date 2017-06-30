@@ -3,6 +3,8 @@ namespace common\models;
 
 use common\commands\AddToTimelineCommand;
 use common\models\query\UserQuery;
+use common\models\Branch;
+use common\models\Division;
 use Yii;
 use yii\behaviors\AttributeBehavior;
 use yii\behaviors\TimestampBehavior;
@@ -35,16 +37,25 @@ class User extends ActiveRecord implements IdentityInterface
     const STATUS_NOT_ACTIVE = 1;
     const STATUS_ACTIVE = 2;
     const STATUS_DELETED = 3;
-
+    /*
     const ROLE_USER = 'user';
     const ROLE_MANAGER = 'manager';
     const ROLE_ADMINISTRATOR = 'administrator';
+    */
 
+    const ROLE_SUPERADM = 'superadm';
+    const ROLE_ORGADM = 'orgadm';
+    const ROLE_TECHADM = 'techadm';
+    const ROLE_ORGOPR = 'orgopr';
+    const ROLE_TECHOPR = 'techopr';
+    const ROLE_VIEWER = 'viewer';
+    
     const EVENT_AFTER_SIGNUP = 'afterSignup';
     const EVENT_AFTER_LOGIN = 'afterLogin';
 
-    const BRANCH_OWN = 1;
-    const BRANCH_ALL = 2;
+    const LEVEL_ACCESS_DIVISION = 1;
+    const LEVEL_ACCESS_BRANCH = 2;
+    const LEVEL_ACCESS_ALL = 3;
     /**
      * @inheritdoc
      */
@@ -112,7 +123,7 @@ class User extends ActiveRecord implements IdentityInterface
             [['username'], 'unique'],
             ['status', 'default', 'value' => self::STATUS_NOT_ACTIVE],
             ['status', 'in', 'range' => array_keys(self::statuses())],
-            [['branch_id','branch_access'], 'integer'],
+            [['branch_id','division_id','level_access'], 'integer'],
             [['username'], 'filter', 'filter' => '\yii\helpers\Html::encode']
         ];
     }
@@ -127,7 +138,8 @@ class User extends ActiveRecord implements IdentityInterface
             'email' => Yii::t('common', 'E-mail'),
             'status' => Yii::t('common', 'Status'),
             'branch_id' => 'Відділення',
-            'branch_access' => 'Обмеження',
+            'division_id' => 'Підрозділ',
+            'level_access' => 'Обмеження',
             'access_token' => Yii::t('common', 'API access token'),
             'created_at' => Yii::t('common', 'Created at'),
             'updated_at' => Yii::t('common', 'Updated at'),
@@ -251,6 +263,25 @@ class User extends ActiveRecord implements IdentityInterface
         ];
     }
 
+    public static function levelaccess()
+    {
+       return [
+            self::LEVEL_ACCESS_DIVISION => 'Свій підрозділ',
+            self::LEVEL_ACCESS_BRANCH => 'Своє відділення',
+            self::LEVEL_ACCESS_ALL => 'Всі відділення',
+        ];
+    }
+    public static function roles()
+    {
+       return [
+            self::ROLE_SUPERADM => 'Адміністратор',
+            self::ROLE_ORGADM => 'Організ.адміністратор',
+            self::ROLE_TECHADM => 'Технолог.адміністратор.',
+            self::ROLE_ORGOPR => 'Організ.оператор',
+            self::ROLE_TECHOPR => 'Технолог.оператор',
+            self::ROLE_VIEWER => 'Перегляд',
+        ];
+    }
     /**
      * Creates user profile and application event
      * @param array $profileData
@@ -293,4 +324,5 @@ class User extends ActiveRecord implements IdentityInterface
         }
         return $this->email;
     }
+    
 }

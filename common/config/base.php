@@ -100,6 +100,14 @@ $config = [
                     ],
                     'on missingTranslation' => ['\backend\modules\i18n\Module', 'missingTranslation']
                 ],
+                /*
+                'dbManager' => [
+                    'class' => 'yii\i18n\PhpMessageSource',
+                    'sourceLanguage' => 'ru-RU',
+                    'basePath' => '@common/messages',
+                ]
+                 * 
+                 */
                 /* Uncomment this code to use DbMessageSource
                  '*'=> [
                     'class' => 'yii\i18n\DbMessageSource',

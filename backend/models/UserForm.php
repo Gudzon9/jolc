@@ -2,6 +2,8 @@
 namespace backend\models;
 
 use common\models\User;
+use common\models\Branch;
+use common\models\Division;
 use yii\base\Exception;
 use yii\base\Model;
 use Yii;
@@ -15,13 +17,17 @@ class UserForm extends Model
     public $username;
     public $email;
     public $branch_id;
-    public $branch_access;
+    public $division_id;
+    public $level_access;
     public $password;
     public $status;
     public $roles;
 
     private $model;
 
+    const LEVEL_ACCESS_DIVISION = 1;
+    const LEVEL_ACCESS_BRANCH = 2;
+    const LEVEL_ACCESS_ALL = 3;
     /**
      * @inheritdoc
      */
@@ -46,7 +52,7 @@ class UserForm extends Model
                 }
             }],
             */
-            [['branch_id','branch_access'], 'integer'],        
+            [['branch_id','division_id','level_access'], 'integer'],
             ['password', 'required', 'on' => 'create'],
             ['password', 'string', 'min' => 6],
 
@@ -69,7 +75,8 @@ class UserForm extends Model
             'username' => Yii::t('common', 'Username'),
             'email' => Yii::t('common', 'Email'),
             'branch_id' => 'Відділення',
-            'branch_access' => 'Обмеження',
+            'division_id' => 'Підрозділ',
+            'level_access' => 'Обмеження',
             'status' => Yii::t('common', 'Status'),
             'password' => Yii::t('common', 'Password'),
             'roles' => Yii::t('common', 'Roles')
@@ -85,7 +92,8 @@ class UserForm extends Model
         $this->username = $model->username;
         //$this->email = $model->email;
         $this->branch_id = $model->branch_id;
-        $this->branch_access = $model->branch_access;
+        $this->division_id = $model->division_id;
+        $this->level_access = $model->level_access;
         $this->status = $model->status;
         $this->model = $model;
         $this->roles = ArrayHelper::getColumn(
@@ -119,7 +127,8 @@ class UserForm extends Model
             $model->username = $this->username;
             //$model->email = $this->email;
             $model->branch_id = $this->branch_id ;
-            $model->branch_access = $this->branch_access ;
+            $model->division_id = $this->division_id ;
+            $model->level_access = $this->level_access ;
             $model->status = $this->status;
             if ($this->password) {
                 $model->setPassword($this->password);
