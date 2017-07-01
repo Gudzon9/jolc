@@ -6,6 +6,9 @@ use backend\assets\BackendAsset;
 use backend\models\SystemLog;
 use backend\widgets\Menu;
 use common\models\TimelineEvent;
+use common\models\User;
+use common\models\Branch;
+use common\models\Division;
 use yii\bootstrap\Alert;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
@@ -14,6 +17,7 @@ use yii\log\Logger;
 use yii\widgets\Breadcrumbs;
 
 $bundle = BackendAsset::register($this);
+$cansuperadm = Yii::$app->user->can('superadm')
 /*
                             <!-- User image -->
                             <li class="user-header light-blue">
@@ -76,25 +80,35 @@ $bundle = BackendAsset::register($this);
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </a>
-            <div class="navbar-custom-menu" style="float: left; padding-left: 150px">
-                <ul class="nav navbar-nav">
+            <div class="navbar-custom-menu" style="float: left; padding-left: 50px">
+               
+               <ul class="nav navbar-nav">
                     <li class="dropdown user user-menu">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                           <span>Поточний підрозділ <i class="caret"></i></span>
+                           <span>Рівень доступу :
+                               <b>
+                               <?php 
+                                switch(Yii::$app->user->identity->level_access) {
+                                    case User::LEVEL_ACCESS_ALL :
+                                       echo 'Всі відділення';
+                                       break;
+                                    case User::LEVEL_ACCESS_BRANCH :
+                                       echo Branch::findOne(Yii::$app->user->identity->branch_id)->name ;
+                                       break; 
+                                    case User::LEVEL_ACCESS_DIVISION :
+                                       echo Division::findOne(Yii::$app->user->identity->division_id)->name." / ". Branch::findOne(Yii::$app->user->identity->branch_id)->name ;
+                                       break; 
+                                }
+                               ?>
+                               </b>    
+                           </span>
                         </a>
-                        <ul class="dropdown-menu" style="width: 100px">
-                            <!-- User image -->
-                            <!-- Menu Footer-->
+                    <!--      <ul class="dropdown-menu" style="width: 100px">
+                            
                             <li>
-                                    <?php echo Html::a(Yii::t('backend', 'Profile'), ['/sign-in/profile'], []) ?>
+                                    <?php //echo Html::a(Yii::t('backend', 'Profile'), ['/sign-in/profile'], []) ?>
                             </li>
-                            <li>
-                                    <?php echo Html::a(Yii::t('backend', 'Account'), ['/sign-in/account'], []) ?>
-                            </li>
-                            <li>
-                                    <?php echo Html::a(Yii::t('backend', 'Logout'), ['/sign-in/logout'], ['data-method' => 'post']) ?>
-                            </li>
-                        </ul>
+                        </ul>-->
                     </li>
                 </ul>
             </div>
@@ -109,6 +123,7 @@ $bundle = BackendAsset::register($this);
                         </a>
                     </li>
                     <!-- Notifications: style can be found in dropdown.less -->
+                     <?php if($cansuperadm) { ?>
                     <li id="log-dropdown" class="dropdown notifications-menu">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                             <i class="fa fa-warning"></i>
@@ -136,6 +151,7 @@ $bundle = BackendAsset::register($this);
                             </li>
                         </ul>
                     </li>
+                    <?php } ?>
                     <!-- User Account: style can be found in dropdown.less -->
                     <li class="dropdown user user-menu">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">
@@ -156,7 +172,7 @@ $bundle = BackendAsset::register($this);
                         </ul>
                     </li>
                     <li>
-                        <?php echo Html::a('<i class="fa fa-cogs"></i>', ['/site/settings']) ?>
+                        <?php echo ($cansuperadm) ? Html::a('<i class="fa fa-cogs"></i>', ['/site/settings']) : '' ?>
                     </li>
                 </ul>
             </div>
@@ -199,6 +215,7 @@ $bundle = BackendAsset::register($this);
                         'url' => '#',
                         'icon' => '<i class="fa fa-edit"></i>',
                         'options' => ['class' => 'treeview'],
+                        'visible' => $cansuperadm,
                         'items' => [
                             ['label' => Yii::t('backend', 'Static pages'), 'url' => ['/page/index'], 'icon' => '<i class="fa fa-angle-double-right"></i>'],
                             ['label' => Yii::t('backend', 'Articles'), 'url' => ['/article/index'], 'icon' => '<i class="fa fa-angle-double-right"></i>'],
@@ -215,12 +232,12 @@ $bundle = BackendAsset::register($this);
                         'icon' => '<i class="fa fa-edit"></i>',
                         'options' => ['class' => 'treeview'],
                         'items' => [
-                            ['label' => 'Теріторії', 'url' => ['/district/index'], 'icon' => '<i class="fa fa-angle-double-right"></i>'],
-                            ['label' => 'Відділення', 'url' => ['/branch/index'], 'icon' => '<i class="fa fa-angle-double-right"></i>'],
+                            ['label' => 'Теріторії', 'url' => ['/district/index'], 'icon' => '<i class="fa fa-angle-double-right"></i>', 'visible' => $cansuperadm,],
+                            ['label' => 'Відділення', 'url' => ['/branch/index'], 'icon' => '<i class="fa fa-angle-double-right"></i>', 'visible' => $cansuperadm,],
                             ['label' => 'Підрозділи', 'url' => ['/division/index'], 'icon' => '<i class="fa fa-angle-double-right"></i>'],
                             ['label' => 'Робочі місця', 'url' => ['/workplace/index'], 'icon' => '<i class="fa fa-angle-double-right"></i>'],
                             ['label' => 'Сценарії', 'url' => ['/scenario/index'], 'icon' => '<i class="fa fa-angle-double-right"></i>'],
-                            ['label' => 'Персонал', 'url' => ['/user/index'], 'icon' => '<i class="fa fa-angle-double-right"></i>'],
+                            ['label' => 'Персонал', 'url' => ['/user/index'], 'icon' => '<i class="fa fa-angle-double-right"></i>', 'visible' => $cansuperadm,],
                         ]
                     ],
                     [
@@ -240,6 +257,7 @@ $bundle = BackendAsset::register($this);
                         'url' => '#',
                         'icon' => '<i class="fa fa-cogs"></i>',
                         'options' => ['class' => 'treeview'],
+                         'visible' => $cansuperadm,
                         'items' => [
                             //['label' => Yii::t('backend', 'File Storage'), 'url' => ['/file-storage/index'], 'icon' => '<i class="fa fa-angle-double-right"></i>'],
                             //['label' => Yii::t('backend', 'Cache'), 'url' => ['/cache/index'], 'icon' => '<i class="fa fa-angle-double-right"></i>'],

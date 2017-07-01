@@ -7,7 +7,7 @@ $config = [
     'vendorPath'=>dirname(dirname(__DIR__)).'/vendor',
     'extensions' => require(__DIR__ . '/../../vendor/yiisoft/extensions.php'),
     'sourceLanguage'=>'en-US',
-    'language'=>'en-US',
+    'language'=>'uk-UA',
     'bootstrap' => ['log'],
     'components' => [
 
@@ -97,8 +97,14 @@ $config = [
                         'common'=>'common.php',
                         'backend'=>'backend.php',
                         'frontend'=>'frontend.php',
+                        'dbManager'=>'dbManager.php',
                     ],
                     'on missingTranslation' => ['\backend\modules\i18n\Module', 'missingTranslation']
+                ],
+                'dbManager' => [
+                    'class' => 'yii\i18n\PhpMessageSource' ,
+                    'basePath'=>'@common/messages',
+                    'fileMap'=>['dbManager'=>'dbManager.php',],
                 ],
                 /*
                 'dbManager' => [

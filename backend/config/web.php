@@ -6,14 +6,20 @@ $config = [
     'controllerMap' => [
         'file-manager-elfinder' => [
             'class' => mihaildev\elfinder\Controller::class,
-            'access' => ['manager'],
+            'access' => ['superadm'],
             'disabledCommands' => ['netmount'],
             'roots' => [
-                [
+                'storage'=>[
                     'baseUrl' => '@storageUrl',
                     'basePath' => '@storage',
-                    'path' => '/',
-                    'access' => ['read' => 'manager', 'write' => 'manager']
+                    'path' => '/web/source/',
+                    'access' => ['read' => 'superadm', 'write' => 'superadm']
+                ],
+                'backup'=>[
+                    'baseUrl' => '@backendUrl',
+                    'basePath' => '@backend',
+                    'path' => '/backups/',
+                    'access' => ['read' => 'superadm', 'write' => 'superadm']
                 ]
             ]
         ]

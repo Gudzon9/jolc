@@ -93,6 +93,14 @@ class Division extends \yii\db\ActiveRecord
     {
         return $this->hasOne(Branch::className(),['id'=>'branch_id']);
     }
+    public static function divtypes()
+    {
+       return [
+            self::DIVISION_TYPE_ADM => 'Адміністрація',
+            self::DIVISION_TYPE_ORG => 'Орг.відділи',
+            self::DIVISION_TYPE_LAB => 'Лабораторії',
+        ];
+    }
 
 /*    
         public function afterSave($insert, $changedAttributes)

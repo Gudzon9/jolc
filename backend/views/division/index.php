@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 use yii\grid\GridView;
+use common\grid\EnumColumn;
 use common\models\User;
 use common\models\Branch;
 use common\models\Division;
@@ -33,30 +34,17 @@ $this->params['breadcrumbs'][] = $this->title;
                 }               
             ],
             [
+                'class' => EnumColumn::className(),
                 'attribute' => 'type_div',
-                'filter' => [Division::DIVISION_TYPE_ADM => 'Адміністрація', Division::DIVISION_TYPE_ORG => 'Орг.відділи', Division::DIVISION_TYPE_LAB => 'Лабораторії', ],
-                'value'=>function($model){
-                    $retval = '???';    
-                    switch ($model->type_div) {
-                        case Division::DIVISION_TYPE_ADM :
-                            $retval = 'Адміністрація';
-                            break;
-                        case Division::DIVISION_TYPE_ORG :
-                            $retval = 'Орг.відділи';
-                            break;
-                        case Division::DIVISION_TYPE_LAB :
-                            $retval = 'Лабораторії';
-                            break;
-                    }
-                
-                    return $retval ;
-                }               
+                'enum' => Division::divtypes(),
+                'filter' => Division::divtypes(),
             ],
             [
                 'attribute' => 'type_lab',
                 'filter' => Yii::$app->params['atypeslab'],
                 'value'=>function($model){
-                    return Yii::$app->params['atypeslab'][$model->type_lab];
+                    
+                    return ($model->type_div == 3) ? Yii::$app->params['atypeslab'][$model->type_lab] : '';
                 }               
             ],
             [
