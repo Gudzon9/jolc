@@ -6,9 +6,9 @@ use common\models\Branch;
 use common\models\Division;
 use yii\helpers\ArrayHelper;
 
-/* @var $this yii\web\View */
-/* @var $model common\models\Division */
-/* @var $form yii\widgets\ActiveForm */
+$this->title = ($model->isNewRecord ? 'Новий ' : 'Редагування').' Підрозділ : ' . $model->name;
+$this->params['breadcrumbs'][] = ['label' => 'Підрозділ', 'url' => ['index']];
+$this->params['breadcrumbs'][] = $model->isNewRecord ? 'Новий ' : 'Редагування';
 ?>
 
 <div class="division-form">

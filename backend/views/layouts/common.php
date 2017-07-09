@@ -237,6 +237,9 @@ $cansuperadm = Yii::$app->user->can('superadm')
                             ['label' => 'Підрозділи', 'url' => ['/division/index'], 'icon' => '<i class="fa fa-angle-double-right"></i>'],
                             ['label' => 'Робочі місця', 'url' => ['/workplace/index'], 'icon' => '<i class="fa fa-angle-double-right"></i>'],
                             ['label' => 'Сценарії', 'url' => ['/scenario/index'], 'icon' => '<i class="fa fa-angle-double-right"></i>'],
+                            ['label' => 'Напрямки', 'url' => ['/direction/index'], 'icon' => '<i class="fa fa-angle-double-right"></i>'],
+                            ['label' => 'Матеріали', 'url' => ['/material/index'], 'icon' => '<i class="fa fa-angle-double-right"></i>'],
+                            ['label' => 'Мета', 'url' => ['/mission/index'], 'icon' => '<i class="fa fa-angle-double-right"></i>'],
                             ['label' => 'Персонал', 'url' => ['/user/index'], 'icon' => '<i class="fa fa-angle-double-right"></i>', 'visible' => $cansuperadm,],
                         ]
                     ],

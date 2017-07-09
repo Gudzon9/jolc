@@ -23,6 +23,9 @@ class m140703_123000_user extends Migration
             'oauth_client_user_id' => $this->string(),
             'email' => $this->string()->notNull(),
             'status' => $this->smallInteger()->notNull()->defaultValue(User::STATUS_ACTIVE),
+            'branch_id' => $this->integer(),
+            'division_id'=> $this->integer(),
+            'level_access' => $this->integer(),
             'created_at' => $this->integer(),
             'updated_at' => $this->integer(),
             'logged_at' => $this->integer()

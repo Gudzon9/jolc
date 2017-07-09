@@ -3,6 +3,11 @@
 namespace common\models;
 
 use Yii;
+use common\commands\AddToTimelineCommand;
+use yii\behaviors\TimestampBehavior;
+use yii\behaviors\BlameableBehavior;
+use common\behaviors\SlogBehavior;
+use yii\db\ActiveRecord;
 
 /**
  * This is the model class for table "material".
@@ -16,8 +21,34 @@ use Yii;
  * @property string $created_at
  * @property string $updated_at
  */
-class Material extends \yii\db\ActiveRecord
+class Material extends ActiveRecord
 {
+    public function behaviors()
+    {
+        return [
+            'timestamp'=> [
+                'class' => TimestampBehavior::className(),
+                'attributes' => [
+                    ActiveRecord::EVENT_BEFORE_INSERT => ['created_at', 'updated_at'],
+                    ActiveRecord::EVENT_BEFORE_UPDATE => ['updated_at'],
+                ],
+                // если вместо метки времени UNIX используется datetime:
+                // 'value' => new Expression('NOW()'),
+            ],
+            'user_id' => [
+                'class' => BlameableBehavior::className(),
+                //'value' => function($event) {return Yii::$app->user->id;},
+                'attributes' => [
+                    ActiveRecord::EVENT_BEFORE_INSERT => ['created_by', 'updated_by'],
+                    ActiveRecord::EVENT_BEFORE_UPDATE => ['updated_by'],
+                ],
+            ],
+            'slog' => [
+                'class' => SlogBehavior::className(),
+                'excludedAttributes' => ['updated_at'],
+            ]
+        ];
+    }
     /**
      * @inheritdoc
      */
@@ -32,8 +63,9 @@ class Material extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['name', 'type_lab', 'type_direction', 'type_when_dir_1', 'type_when_dir_2', 'created_at'], 'required'],
+            [['name', 'type_lab', 'type_direction'], 'required'],
             [['type_lab', 'type_direction', 'type_when_dir_1', 'type_when_dir_2'], 'integer'],
+            [['created_at', 'updated_at', 'created_by','updated_by'], 'safe'],
             [['created_at', 'updated_at'], 'safe'],
             [['name'], 'string', 'max' => 100],
         ];
@@ -54,5 +86,9 @@ class Material extends \yii\db\ActiveRecord
             'created_at' => 'Created At',
             'updated_at' => 'Updated At',
         ];
+    }
+    public function getDirection()
+    {
+        return $this->hasOne(Direction::className(),['id'=>'type_direction']);
     }
 }

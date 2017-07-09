@@ -10,19 +10,17 @@ use common\behaviors\SlogBehavior;
 use yii\db\ActiveRecord;
 
 /**
- * This is the model class for table "mission".
+ * This is the model class for table "direction".
  *
  * @property integer $id
  * @property string $name
  * @property integer $type_lab
- * @property integer $type_direction
- * @property integer $type_when_dir_1
- * @property integer $type_when_dir_2
- * @property integer $material_id
- * @property string $created_at
- * @property string $updated_at
+ * @property integer $created_at
+ * @property integer $updated_at
+ * @property integer $created_by
+ * @property integer $updated_by
  */
-class Mission extends ActiveRecord
+class Direction extends ActiveRecord
 {
     public function behaviors()
     {
@@ -55,7 +53,7 @@ class Mission extends ActiveRecord
      */
     public static function tableName()
     {
-        return 'mission';
+        return 'direction';
     }
 
     /**
@@ -64,8 +62,8 @@ class Mission extends ActiveRecord
     public function rules()
     {
         return [
-            [['name', 'type_lab', 'type_direction'], 'required'],
-            [['type_lab', 'type_direction', 'type_when_dir_1', 'type_when_dir_2', 'material_id'], 'integer'],
+            [['name', 'type_lab'], 'required'],
+            [['type_lab', 'created_at', 'updated_at', 'created_by', 'updated_by'], 'integer'],
             [['created_at', 'updated_at', 'created_by','updated_by'], 'safe'],
             [['name'], 'string', 'max' => 100],
         ];
@@ -80,9 +78,6 @@ class Mission extends ActiveRecord
             'id' => 'ID',
             'name' => 'Назва',
             'type_lab' => 'Тип лабораторії',
-            'type_direction' => 'Type Direction',
-            'type_when_dir_1' => 'Type When Dir 1',
-            'type_when_dir_2' => 'Type When Dir 2',
             'created_at' => 'Створено (коли)',
             'updated_at' => 'Змінено (коли)',
             'created_by' => 'Створено (ким)',
