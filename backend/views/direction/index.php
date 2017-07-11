@@ -4,6 +4,7 @@ use yii\helpers\Html;
 use yii\grid\GridView;
 use kartik\daterange\DateRangePicker;
 use common\models\User;
+use common\models\DirTagLab;
 use yii\helpers\ArrayHelper;
 
 /* @var $this yii\web\View */
@@ -28,10 +29,18 @@ $this->params['breadcrumbs'][] = $this->title;
             'name',
             [
                 'attribute' => 'type_lab',
-                'filter' => Yii::$app->params['atypeslab'],
+                'format' => 'html',
+                'filter' => false,
                 'value'=>function($model){
+                    $str = '';
+                    $aLabs = DirTagLab::find()->Where(['dir_id'=>$model->id])->asArray()->all();
+                    foreach ($aLabs As $item)
+                    {
+                        $str .= Yii::$app->params['atypeslab'][ $item['lab_id']].'<br>';
+                    }
+                    return $str;
                     
-                    return Yii::$app->params['atypeslab'][$model->type_lab] ;
+                    //return Yii::$app->params['atypeslab'][$model->type_lab] ;
                 }               
             ],
             [

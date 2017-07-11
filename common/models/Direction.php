@@ -8,6 +8,7 @@ use yii\behaviors\TimestampBehavior;
 use yii\behaviors\BlameableBehavior;
 use common\behaviors\SlogBehavior;
 use yii\db\ActiveRecord;
+use common\models\DirTagLab;
 
 /**
  * This is the model class for table "direction".
@@ -22,6 +23,9 @@ use yii\db\ActiveRecord;
  */
 class Direction extends ActiveRecord
 {
+    public $taglab;
+
+
     public function behaviors()
     {
         return [
@@ -62,7 +66,7 @@ class Direction extends ActiveRecord
     public function rules()
     {
         return [
-            [['name', 'type_lab'], 'required'],
+            [['name', 'taglab'], 'required'],
             [['type_lab', 'created_at', 'updated_at', 'created_by', 'updated_by'], 'integer'],
             [['created_at', 'updated_at', 'created_by','updated_by'], 'safe'],
             [['name'], 'string', 'max' => 100],
@@ -77,11 +81,25 @@ class Direction extends ActiveRecord
         return [
             'id' => 'ID',
             'name' => 'Назва',
-            'type_lab' => 'Тип лабораторії',
+            'taglab' => 'Тип лабораторії',
             'created_at' => 'Створено (коли)',
             'updated_at' => 'Змінено (коли)',
             'created_by' => 'Створено (ким)',
             'updated_by' => 'Змінено (ким)',
         ];
+    }
+
+    public function afterSave($insert, $changedAttributes) {
+         parent::afterSave($insert, $changedAttributes);
+         
+         DirTagLab::deleteAll(['dir_id' => $this->id]);
+         foreach ($this->taglab as $item) {
+            $dirtag = new DirTagLab();
+            $dirtag->dir_id = $this->id;
+            $dirtag->lab_id = $item;
+            $dirtag->save();             
+         }
+         
+         
     }
 }

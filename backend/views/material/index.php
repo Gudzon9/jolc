@@ -5,6 +5,7 @@ use yii\grid\GridView;
 use common\models\Direction;
 use common\grid\EnumColumn;
 use common\models\User;
+use common\models\MatTagDir;
 use yii\helpers\ArrayHelper;
 use kartik\daterange\DateRangePicker;
 
@@ -30,18 +31,34 @@ $this->params['breadcrumbs'][] = $this->title;
         'columns' => [
             'name',
             [
-                'attribute' => 'type_lab',
-                'filter' => Yii::$app->params['atypeslab'],
-                'value'=>function($model){
-                    
-                    return Yii::$app->params['atypeslab'][$model->type_lab] ;
+                'attribute' => 'type_direction',
+                'filter' => false,
+                'format' => 'html',
+                 'value'=>function($model){
+                    $str = '';
+                    $aDirs = MatTagDir::find()->Where(['mat_id'=>$model->id])->asArray()->all();
+                    foreach ($aDirs As $item)
+                    {
+                        $str .= Direction::findOne($item['dir_id'])->name.'<br>';
+                    }
+                    return $str;
                 }               
             ],
             [
-                'attribute' => 'type_direction',
-                'filter' => ArrayHelper::map(Direction::find()->asArray()->all(),'id','name'),
+                'attribute' => 'type_lab',
+                'filter' => false,
+                'format' => 'html',
                 'value'=>function($model){
-                    return $model->getDirection()->one()->name;
+                    $str = '';
+                    $aLabs = Yii::$app->db->createCommand('SELECT d.lab_id FROM dir_tag_lab d INNER JOIN mat_tag_dir m ON m.dir_id=d.dir_id WHERE m.mat_id=:id ')
+                        ->bindValue(':id', $model->id)
+                        ->queryAll();
+                            //MatTagDir::find()->Where(['mat_id'=>$model->id])->asArray()->all();
+                    foreach ($aLabs As $item)
+                    {
+                        $str .= Yii::$app->params['atypeslab'][ $item['lab_id']].'<br>';
+                    }
+                    return $str;
                 }               
             ],
             [

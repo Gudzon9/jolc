@@ -8,6 +8,7 @@ use yii\behaviors\TimestampBehavior;
 use yii\behaviors\BlameableBehavior;
 use common\behaviors\SlogBehavior;
 use yii\db\ActiveRecord;
+use common\models\MatTagDir;
 
 /**
  * This is the model class for table "material".
@@ -23,6 +24,8 @@ use yii\db\ActiveRecord;
  */
 class Material extends ActiveRecord
 {
+    public $tagdir;
+    
     public function behaviors()
     {
         return [
@@ -63,7 +66,7 @@ class Material extends ActiveRecord
     public function rules()
     {
         return [
-            [['name', 'type_lab', 'type_direction'], 'required'],
+            [['name', 'tagdir'], 'required'],
             [['type_lab', 'type_direction', 'type_when_dir_1', 'type_when_dir_2'], 'integer'],
             [['created_at', 'updated_at', 'created_by','updated_by'], 'safe'],
             [['created_at', 'updated_at'], 'safe'],
@@ -90,5 +93,18 @@ class Material extends ActiveRecord
     public function getDirection()
     {
         return $this->hasOne(Direction::className(),['id'=>'type_direction']);
+    }
+    public function afterSave($insert, $changedAttributes) {
+         parent::afterSave($insert, $changedAttributes);
+         
+         MatTagDir::deleteAll(['mat_id' => $this->id]);
+         foreach ($this->tagdir as $item) {
+            $mattag = new MatTagDir();
+            $mattag->mat_id = $this->id;
+            $mattag->dir_id = $item;
+            $mattag->save();             
+         }
+         
+         
     }
 }
