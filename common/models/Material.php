@@ -49,6 +49,13 @@ class Material extends ActiveRecord
             'slog' => [
                 'class' => SlogBehavior::className(),
                 'excludedAttributes' => ['updated_at'],
+            ],
+            'crosstab' => [
+                'class' => TagsBehavior::className(),
+                'CrossTabClassName' => MatTagDir::className(),
+                'LeftKeyName' => 'mat_id',
+                'RightKeyName' => 'dir_id',
+                'TagCont' => 'tagdir',
             ]
         ];
     }
@@ -94,6 +101,7 @@ class Material extends ActiveRecord
     {
         return $this->hasOne(Direction::className(),['id'=>'type_direction']);
     }
+    /*
     public function afterSave($insert, $changedAttributes) {
          parent::afterSave($insert, $changedAttributes);
          
@@ -104,7 +112,7 @@ class Material extends ActiveRecord
             $mattag->dir_id = $item;
             $mattag->save();             
          }
-         
-         
     }
+     * 
+     */
 }

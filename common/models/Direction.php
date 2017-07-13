@@ -7,6 +7,7 @@ use common\commands\AddToTimelineCommand;
 use yii\behaviors\TimestampBehavior;
 use yii\behaviors\BlameableBehavior;
 use common\behaviors\SlogBehavior;
+use common\behaviors\TagsBehavior;
 use yii\db\ActiveRecord;
 use common\models\DirTagLab;
 
@@ -49,6 +50,13 @@ class Direction extends ActiveRecord
             'slog' => [
                 'class' => SlogBehavior::className(),
                 'excludedAttributes' => ['updated_at'],
+            ],
+            'crosstab' => [
+                'class' => TagsBehavior::className(),
+                'CrossTabClassName' => DirTagLab::className(),
+                'LeftKeyName' => 'dir_id',
+                'RightKeyName' => 'lab_id',
+                'TagCont' => 'taglab',
             ]
         ];
     }
@@ -88,7 +96,7 @@ class Direction extends ActiveRecord
             'updated_by' => 'Змінено (ким)',
         ];
     }
-
+    /*
     public function afterSave($insert, $changedAttributes) {
          parent::afterSave($insert, $changedAttributes);
          
@@ -99,7 +107,6 @@ class Direction extends ActiveRecord
             $dirtag->lab_id = $item;
             $dirtag->save();             
          }
-         
-         
     }
+     */
 }
